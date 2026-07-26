@@ -1,0 +1,113 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  EMPLOYEE
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  HALF_DAY
+}
+
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ExpenseStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Department {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  employees User[]
+
+  createdAt DateTime @default(now())
+}
+
+model User {
+  id          Int     @id @default(autoincrement())
+  name        String
+  email       String  @unique
+  password    String
+  phone       String?
+  designation String?
+
+  role Role @default(EMPLOYEE)
+
+  departmentId Int?
+  department   Department? @relation(fields: [departmentId], references: [id])
+
+  attendances Attendance[]
+  leaves       Leave[]
+  expenses     Expense[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Expense {
+  id Int @id @default(autoincrement())
+
+  amount Float
+
+  category String
+
+  description String?
+
+  receipt String?
+
+  expenseDate DateTime
+
+  status ExpenseStatus @default(PENDING)
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Attendance {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  checkIn  DateTime?
+  checkOut DateTime?
+
+  status AttendanceStatus @default(PRESENT)
+
+  createdAt DateTime @default(now())
+}
+
+model Leave {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  reason    String
+  startDate DateTime
+  endDate   DateTime
+
+  status LeaveStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+}
