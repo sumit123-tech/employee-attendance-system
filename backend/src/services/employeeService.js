@@ -128,6 +128,7 @@ const updateEmployee = async (id, data) => {
 };
 
 const deleteEmployee = async (id) => {
+  console.log("SOFT DELETE FUNCTION CALLED");
   const employee = await prisma.user.findFirst({
     where: {
       id: Number(id),

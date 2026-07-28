@@ -33,11 +33,22 @@ const loginUser = async (data) => {
   const { email, password } = data;
 
   const user = await prisma.user.findUnique({
-    where: { email },
+    where: {
+      email,
+    },
   });
+
+  console.log("LOGIN REQUEST");
+  console.log(user);
 
   if (!user) {
     throw new Error("Invalid email or password");
+  }
+
+  if (!user.isActive) {
+    throw new Error(
+      "Your account has been deactivated. Please contact the administrator."
+    );
   }
 
   const isMatch = await comparePassword(password, user.password);
