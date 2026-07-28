@@ -51,11 +51,18 @@ const getAllEmployees = async () => {
       phone: true,
       designation: true,
       role: true,
-      createdAt: true,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
+      departmentId: true,
+
+      department: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+
+    createdAt: true,
+    }
+    
   });
 
   return employees;
@@ -76,6 +83,13 @@ const getEmployeeById = async (id) => {
       designation: true,
       role: true,
       departmentId: true,
+
+      department: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
       createdAt: true,
       updatedAt: true,
     },

@@ -33,10 +33,12 @@ const loginUser = async (data) => {
   const { email, password } = data;
 
   const user = await prisma.user.findUnique({
-    where: {
-      email,
-    },
+    where: { email },
   });
+
+  console.log("==============");
+  console.log(user);
+  console.log("==============");
 
   console.log("LOGIN REQUEST");
   console.log(user);
