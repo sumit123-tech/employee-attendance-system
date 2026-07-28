@@ -31,7 +31,7 @@ function AdminLayout({ children }) {
       icon: <LayoutDashboard size={20} />,
     },
     {
-      name: "Employees",
+      name: "Employees Management",
       path: "/employees",
       icon: <Users size={20} />,
     },

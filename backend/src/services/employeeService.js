@@ -42,6 +42,7 @@ const getAllEmployees = async () => {
   const employees = await prisma.user.findMany({
     where: {
       role: "EMPLOYEE",
+      isActive: true,
     },
     select: {
       id: true,
@@ -65,6 +66,7 @@ const getEmployeeById = async (id) => {
     where: {
       id: Number(id),
       role: "EMPLOYEE",
+      isActive: true,
     },
     select: {
       id: true,
@@ -99,6 +101,7 @@ const updateEmployee = async (id, data) => {
     where: {
       id: Number(id),
       role: "EMPLOYEE",
+      isActive: true,
     },
   });
 
@@ -136,14 +139,17 @@ const deleteEmployee = async (id) => {
     throw new Error("Employee not found.");
   }
 
-  await prisma.user.delete({
+  await prisma.user.update({
     where: {
       id: Number(id),
+    },
+    data: {
+      isActive: false,
     },
   });
 
   return {
-    message: "Employee deleted successfully.",
+    message: "Employee deactivated successfully.",
   };
 };
 

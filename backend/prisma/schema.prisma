@@ -50,6 +50,8 @@ model User {
 
   role Role @default(EMPLOYEE)
 
+  isActive Boolean @default(true)
+
   departmentId Int?
   department   Department? @relation(fields: [departmentId], references: [id])
 
